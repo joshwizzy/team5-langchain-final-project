@@ -8,9 +8,11 @@ from data.chroma import issues
 from models.issues import IssuesQueryOutput
 
 system_prompt = """
-Use the following pieces of context to answer the user's question.
+Use the following pieces of context between ''' to answer the user's question.
 If you don't find the anwer in the provided context respond with 'I don't know'
-Context: {context}
+'''
+{context}
+'''
 """
 
 
@@ -30,7 +32,6 @@ def search(query: str):
         return "\n\n".join(doc.page_content for doc in docs)
 
     content = format_docs(docs)
-
     rag_chain = {
         "context": lambda x: content,
         "question": RunnablePassthrough(),
