@@ -1,5 +1,7 @@
+import json
 import os
 
+import requests
 from dotenv import load_dotenv, find_dotenv
 from langchain_community.document_loaders import GitHubIssuesLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -22,3 +24,22 @@ def load_issues(repo=os.environ["GITHUB_REPOSITORY"]):
 
     chunks = splitter.split_documents(docs)
     return chunks
+
+
+def create_issue(title: str, body: str, labels: list[str] = None):
+    url = f"https://api.github.com/repos/%s/issues" % (os.environ["GITHUB_REPOSITORY"])
+
+    headers = {
+        "Authorization": "token %s" % os.environ["GITHUB_PERSONAL_ACCESS_TOKEN"],
+        "Accept": "application/vnd.github.golden-comet-preview+json",
+    }
+
+    payload = {"title": title, "body": body, "labels": labels}
+
+    response = requests.post(url, json=payload, headers=headers)
+    if response.status_code == 202:
+        print('Successfully created Issue "%s"' % title)
+    else:
+        print('Could not create Issue "%s"' % title)
+        print("Response:", response.content)
+    return response.json()
