@@ -17,7 +17,7 @@ def launch_app():
 
 
 def status():
-    with st.spinner("Searching for an answer..."):
+    with st.spinner("Checking if API reachable..."):
         api_url = os.environ["API_URL"]
         response = requests.get(f"{api_url}/healthz")
         if response.status_code == 200:
