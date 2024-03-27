@@ -3,3 +3,4 @@ venv
 .idea
 chroma_db
 __pycache__
+config.yaml
