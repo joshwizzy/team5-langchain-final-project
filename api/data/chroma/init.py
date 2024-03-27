@@ -10,7 +10,7 @@ vector_store: Chroma | None = None
 
 
 def chroma_init(persist_directory="./chroma_db"):
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
     collection_name = "issues"
     global vector_store
     vector_store = Chroma(

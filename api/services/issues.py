@@ -15,7 +15,6 @@ If you don't find the answer in the provided context respond with 'I don't know'
 Context: {context}
 """
 
-
 def search(query: str):
     docs = issues.similarity_search(query)
 
@@ -32,7 +31,6 @@ def search(query: str):
         return "\n\n".join(doc.page_content for doc in docs)
 
     content = format_docs(docs)
-
     rag_chain = {
         "context": lambda x: content,
         "question": RunnablePassthrough(),
