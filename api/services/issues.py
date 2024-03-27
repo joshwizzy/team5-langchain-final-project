@@ -8,8 +8,10 @@ from data.chroma import issues
 from models.issues import IssuesQueryOutput
 
 system_prompt = """
+You are a project manager assistant. Your job is to help answer questions about a github project's issues.
+The context is a combination of all github issues filtered by use of a vector database.
 Use the following pieces of context to answer the user's question.
-If you don't find the anwer in the provided context respond with 'I don't know'
+If you don't find the answer in the provided context respond with 'I don't know'
 Context: {context}
 """
 
