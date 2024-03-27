@@ -1,22 +1,29 @@
 import os
-
-
-from dotenv import load_dotenv, find_dotenv
 import requests
 import streamlit as st
+from dotenv import load_dotenv, find_dotenv
+
+from components.sidebar import sidebar
+
+st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
 
 def launch_app():
-    print("launching app")
-    st.title("Github Issues PM Assistant")
+    st.title('Github PM Assistant')
 
-    with st.spinner("Searching for an answer..."):
+    status()
+
+    sidebar()
+
+
+def status():
+    with st.spinner("Checking if API reachable..."):
         api_url = os.environ["API_URL"]
         response = requests.get(f"{api_url}/healthz")
         if response.status_code == 200:
-            st.info("Healthy")
+            st.success("Healthy")
         else:
-            st.info("API Unreachable")
+            st.error("API Unreachable")
 
 
 if __name__ == "__main__":
