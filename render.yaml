@@ -3,7 +3,7 @@ services:
   - type: web
     name: github-pm-assistant
     runtime: python
-    branch: chore/add-render-deployment
+    branch: main
     plan: free
     autoDeploy: false
     buildCommand: pip install -r requirements.txt
@@ -13,6 +13,8 @@ services:
       paths:
         - api/**
     envVars:
+      - key: API_KEY
+        sync: false
       - key: OPENAI_API_KEY
         sync: false
       - key: GITHUB_PERSONAL_ACCESS_TOKEN
