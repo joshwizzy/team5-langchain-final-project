@@ -8,6 +8,8 @@ services:
       - .env
     ports:
       - "8000:8000"
+    volumes:
+      - "./api:/app"
 
   assistant_frontend:
     build:
@@ -18,3 +20,5 @@ services:
       - assistant_api
     ports:
       - "8501:8501"
+    volumes:
+      - "./frontend:/app"
