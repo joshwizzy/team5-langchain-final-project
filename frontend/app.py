@@ -8,9 +8,6 @@ from pages.issue_summary import issue_summary
 
 from components.sidebar import sidebar
 
-project_issues_chat_title = 'Project Issues Chat Title'
-issue_summary_tittle = 'Issue Summary'
-
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
 
@@ -21,6 +18,7 @@ def launch_app():
 
     sidebar()
 
+
 def status():
     with st.spinner("Searching for an answer..."):
         api_url = os.environ["API_URL"]
@@ -29,6 +27,7 @@ def status():
             st.success("Healthy")
         else:
             st.error("API Unreachable")
+
 
 if __name__ == "__main__":
     load_dotenv(find_dotenv(), override=True)
