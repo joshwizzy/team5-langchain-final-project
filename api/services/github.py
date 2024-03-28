@@ -43,3 +43,20 @@ def create_issue(title: str, body: str, labels: list[str] = None):
         print('Could not create Issue "%s"' % title)
         print("Response:", response.content)
     return response.json()
+
+
+def fetch_issue(issue_path: str):
+    issue_url = f"https://api.github.com/repos{issue_path}"
+    headers = {
+        "Authorization": "token %s" % os.environ["GITHUB_PERSONAL_ACCESS_TOKEN"],
+        "Accept": "application/vnd.github.golden-comet-preview+json",
+    }
+
+    response = requests.get(issue_url, headers=headers)
+    if response.status_code == 200:
+        print('Successfully fetched Issue "%s"' % issue_url)
+        print("Response:", response.content)
+    else:
+        print('Could not fetch Issue "%s"' % issue_url)
+        print("Response:", response.content)
+    return response.json()
