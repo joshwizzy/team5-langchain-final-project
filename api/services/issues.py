@@ -23,6 +23,21 @@ Here is the GitHub issue:
 """
 
 
+generate_issue_system_prompt = """You are an experiencedproduct manager at a software development company. 
+Generate a Github issue for a feature description that a software engineer can use to implement the feature.
+Use markdown format, with subheaders '##'  for each section.
+Start your response with a 'Background' section that provide context for current situation, and what would the benefits of the feature be?
+Follow up with a 'Problem Statement' section that clearly identifies the issue, its impact, and the need for a solution, e.g.,
+"As a `type of user`, I want `some goal` so that `some reason`." →
+Follow up with a 'Screenshots' placeholder section with this text
+"<! - Provide screenshots or visual aids if applicable →"
+Follow up with a 'Acceptance Criteria' section that defines the relevant Acceptence Criteria
+Write out the acceptance criteria in Gherkin BDD style from the perspective of the user and preface each AC with a markdown checkbox
+Finish with a 'Implementation Notes' section that provides specific technical guidance and considerations for the software engineers who will be implementing this feature.
+Here is the feature description:
+"""
+
+
 def search(query: str):
     docs = issues.similarity_search(query)
 
@@ -80,3 +95,21 @@ def summarize(issue: dict):
 
     response = chain.invoke(issue)
     return SummarizeIssueOutput(response=response)
+
+
+def generate_issue(feature_description: str):
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+
+    chat_prompt_template = ChatPromptTemplate.from_messages(
+        [("system", generate_issue_system_prompt), ("human", "{feature_description}")]
+    )
+    llm_chain = chat_prompt_template | llm | StrOutputParser()
+
+    from langchain_core.runnables import RunnablePassthrough
+
+    chain = {
+        "feature_description": RunnablePassthrough(),
+    } | llm_chain
+
+    response = chain.invoke(feature_description)
+    return response

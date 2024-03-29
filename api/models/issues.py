@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -12,3 +14,16 @@ class SummarizeIssueRequest(BaseModel):
 
 class SummarizeIssueOutput(BaseModel):
     response: str
+
+
+class CreateIssueRequest(BaseModel):
+    feature_description: str
+    create_issue: Optional[bool] = False
+    issue_title: Optional[str] = None
+    repo_url: Optional[str] = None
+
+
+class CreateIssueOutput(BaseModel):
+    response: str
+    url: str
+    html_url: str
