@@ -15,7 +15,30 @@ st.set_page_config(layout="wide", initial_sidebar_state="expanded")
 
 
 def launch_app(authenticator=None):
-    st.title("Github PM Assistant")
+    col1, col2 = st.columns((1, 4))
+
+    col1.image("./images/logo.jpeg", width=100)
+    col2.title("Github PM Assistant")
+    st.markdown(
+        """
+        ### Streamline your project workflow with Github PM Assistant 👋 :
+        """
+    )
+    st.page_link(
+        "pages/project_issues_chat.py",
+        label="Ask questions  and get answers about project issues using our intuitive chat interface.  ",
+        icon="1️⃣",
+    )
+    st.page_link(
+        "pages/issue_summary.py",
+        label="Get concise summaries of Github issues, saving you valuable time.",
+        icon="2️⃣",
+    )
+    st.page_link(
+        "pages/generate_issue.py",
+        label="Describe features in natural language and instantly generate new Github issues, streamlining your development process.",
+        icon="3️⃣",
+    )
 
     if authenticator is not None:
         authenticator.logout()

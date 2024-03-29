@@ -4,3 +4,4 @@ venv
 chroma_db
 __pycache__
 config.yaml
+.DS_Store
