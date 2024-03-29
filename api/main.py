@@ -86,5 +86,5 @@ async def create_issue(request: CreateIssueRequest) -> CreateIssueOutput:
     if request.create_issue:
         issue = add_issue(request.issue_title, llm_response, repo=request.repo_url)
         url = issue["url"]
-        issue["html_url"]
+        html_url = issue["html_url"]
     return CreateIssueOutput(response=llm_response, url=url, html_url=html_url)
