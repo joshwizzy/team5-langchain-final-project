@@ -20,13 +20,9 @@ def issue_summary(title="Issue Summary"):
         with st.spinner():
             issue_path = get_username_repo_issues(issue_link)
 
-            st.write(issue_path, issue_link)
-
-            response = make_request("post", "/summarize", payload={"issue_path": f"/{issue_link}"})
-            #
-            # response = make_request(
-            #         "post", "/summarize", payload={"issue_path": f"/{issue_link}"}
-            #     ) if issue_path else None
+            response = make_request(
+                    "post", "/summarize", payload={"issue_path": f"/{issue_path}"}
+                ) if issue_path else None
 
         if response and response.status_code == 200:
             container = st.container(height=500)

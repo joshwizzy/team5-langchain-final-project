@@ -22,10 +22,9 @@ def project_issues_chat(title: str = "Project Issues Chat"):
         def load_repo():
             with st.spinner("Loading issues from repo"):
                 username_repo = get_username_repo(repo_link)
-                response = make_request("post", "/fetch-issues", payload={"repo_url": repo_link})
-                # response = make_request(
-                #     "post", "/fetch-issues", payload={"repo_url": username_repo}
-                # ) if username_repo else None
+                response = make_request(
+                    "post", "/fetch-issues", payload={"repo_url": username_repo}
+                ) if username_repo else None
 
             if response and response.status_code == 200:
                 st.session_state.repo_added = repo_link
@@ -38,14 +37,6 @@ def project_issues_chat(title: str = "Project Issues Chat"):
 
 
 def chat_interface():
-    container_id = "project_issues_chat_container"
-    scroll_script = f"""
-    <script>
-      var container = document.getElementById("{container_id}");
-      console.log('scrolling');
-      container.scrollTop = container.scrollHeight;
-    </script>
-    """
     messages_key = "project_issue_messages"
 
     if messages_key not in st.session_state:
@@ -63,13 +54,10 @@ def chat_interface():
     for i, msg in enumerate(st.session_state[messages_key]):
         message(msg, is_user=i % 2 == 0, key=f"message{i}")
 
-    st.markdown(scroll_script, unsafe_allow_html=True)
-
 
 def chat(query):
     response = make_request("get", f"/qa/{query}")
     if response.status_code == 200:
-        print(response)
         return response.json()
     else:
         return {
