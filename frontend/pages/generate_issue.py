@@ -31,7 +31,7 @@ def generate_summary(title="Generate Issue"):
                     "issue_title": issue_title,
                 }
             )
-        with st.spinner("Generating issue"):
+        with st.spinner("Generating issue ..."):
             response = make_request("post", "/generate-issue", payload=payload)
 
         if response.status_code == 200:
