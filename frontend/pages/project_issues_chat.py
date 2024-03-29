@@ -5,6 +5,7 @@ from streamlit_chat import message
 
 from components.sidebar import sidebar
 from services.assistant import make_request
+from utils.urls import get_username_repo
 
 
 def project_issues_chat(title: str = "Project Issues Chat"):
@@ -20,11 +21,13 @@ def project_issues_chat(title: str = "Project Issues Chat"):
 
         def load_repo():
             with st.spinner("Loading issues from repo"):
-                response = make_request(
-                    "post", "/fetch-issues", payload={"repo_url": repo_link}
-                )
+                username_repo = get_username_repo(repo_link)
+                response = make_request("post", "/fetch-issues", payload={"repo_url": repo_link})
+                # response = make_request(
+                #     "post", "/fetch-issues", payload={"repo_url": username_repo}
+                # ) if username_repo else None
 
-            if response.status_code == 200:
+            if response and response.status_code == 200:
                 st.session_state.repo_added = repo_link
             else:
                 st.error("Failed to add repo")
