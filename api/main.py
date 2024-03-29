@@ -6,11 +6,17 @@ from dotenv import load_dotenv, find_dotenv
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import APIKeyHeader
 
-from models.issues import IssuesQueryOutput, SummarizeIssueOutput, SummarizeIssueRequest
+from models.issues import (
+    IssuesQueryOutput,
+    SummarizeIssueOutput,
+    SummarizeIssueRequest,
+    CreateIssueRequest,
+    CreateIssueOutput,
+)
 from models.requests import FetchIssuesRequest
 from data.chroma.issues import create_embeddings
-from services.github import fetch_issue, load_issues
-from services.issues import search, summarize
+from services.github import add_issue, fetch_issue, load_issues
+from services.issues import generate_issue, search, summarize
 
 
 @asynccontextmanager
@@ -71,3 +77,14 @@ async def fetch_issues(request: FetchIssuesRequest):
 async def summarize_issue(request: SummarizeIssueRequest) -> SummarizeIssueOutput:
     issue = fetch_issue(request.issue_path)
     return summarize(issue)
+
+
+@app.post("/create-issue", dependencies=[Depends(api_key_auth)])
+async def create_issue(request: CreateIssueRequest) -> CreateIssueOutput:
+    llm_response = generate_issue(request.feature_description)
+    if request.create_issue:
+        issue = add_issue(request.issue_title, llm_response, repo=request.repo_url)
+
+    return CreateIssueOutput(
+        response=llm_response, url=issue["url"], html_url=issue["html_url"]
+    )
