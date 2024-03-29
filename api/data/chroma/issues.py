@@ -11,7 +11,9 @@ def compute_hash(chunk):
 
 
 def create_embeddings(chunks):
-    ids = [compute_hash(chunk) for chunk in chunks]
+    unique_chunks = {compute_hash(chunk): chunk for chunk in chunks}
+    ids = list(unique_chunks.keys())
+    chunks = list(unique_chunks.values())
     vector_store.add_documents(chunks, ids=ids, add_to_docstore=False)
 
 

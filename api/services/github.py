@@ -26,15 +26,22 @@ def load_issues(repo=os.environ["GITHUB_REPOSITORY"]):
     return chunks
 
 
-def create_issue(title: str, body: str, labels: list[str] = None):
-    url = f"https://api.github.com/repos/%s/issues" % (os.environ["GITHUB_REPOSITORY"])
+def add_issue(
+    title: str,
+    body: str,
+    labels: list[str] = None,
+    repo=os.environ["GITHUB_REPOSITORY"],
+):
+    url = f"https://api.github.com/repos/{repo}/issues"
 
     headers = {
         "Authorization": "token %s" % os.environ["GITHUB_PERSONAL_ACCESS_TOKEN"],
         "Accept": "application/vnd.github.golden-comet-preview+json",
     }
 
-    payload = {"title": title, "body": body, "labels": labels}
+    payload = {"title": title, "body": body}
+    if labels is not None:
+        payload["labels"] = labels
 
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 202:
