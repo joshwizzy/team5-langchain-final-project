@@ -33,7 +33,7 @@ Follow up with a 'Problem Statement' section that clearly identifies the issue, 
 Follow up with a 'Screenshots' placeholder section with this text
 "<! - Provide screenshots or visual aids if applicable →"
 Follow up with a 'Acceptance Criteria' section that defines the relevant Acceptence Criteria
-Write out the acceptance criteria in Gherkin BDD style from the perspective of the user and preface each AC with a markdown checkbox
+Write out the acceptance criteria in Gherkin BDD style from the perspective of the user and preface each AC with a checkbox
 Finish with a 'Implementation Notes' section that provides specific technical guidance and considerations for the software engineers who will be implementing this feature.
 Here is the feature description:
 """

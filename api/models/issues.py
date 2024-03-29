@@ -25,5 +25,5 @@ class CreateIssueRequest(BaseModel):
 
 class CreateIssueOutput(BaseModel):
     response: str
-    url: str
-    html_url: str
+    url: Optional[str] = None
+    html_url: Optional[str] = None
