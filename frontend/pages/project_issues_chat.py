@@ -58,7 +58,12 @@ def chat_interface():
         st.session_state[messages_key].append(response["response"])
 
     for i, msg in enumerate(st.session_state[messages_key]):
-        message(msg, is_user=i % 2 == 0, key=f"message{i}")
+        message(
+            msg,
+            is_user=i % 2 == 0,
+            key=f"message{i}",
+            allow_html=True,
+        )
 
     st.markdown(scroll_script, unsafe_allow_html=True)
 
