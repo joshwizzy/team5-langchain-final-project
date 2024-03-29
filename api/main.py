@@ -79,12 +79,12 @@ async def summarize_issue(request: SummarizeIssueRequest) -> SummarizeIssueOutpu
     return summarize(issue)
 
 
-@app.post("/create-issue", dependencies=[Depends(api_key_auth)])
+@app.post("/generate-issue", dependencies=[Depends(api_key_auth)])
 async def create_issue(request: CreateIssueRequest) -> CreateIssueOutput:
     llm_response = generate_issue(request.feature_description)
+    url = html_url = None
     if request.create_issue:
         issue = add_issue(request.issue_title, llm_response, repo=request.repo_url)
-
-    return CreateIssueOutput(
-        response=llm_response, url=issue["url"], html_url=issue["html_url"]
-    )
+        url = issue["url"]
+        issue["html_url"]
+    return CreateIssueOutput(response=llm_response, url=url, html_url=html_url)
