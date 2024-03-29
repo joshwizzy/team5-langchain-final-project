@@ -18,7 +18,7 @@ def create_embeddings(chunks):
 
 
 def similarity_search(query: str) -> list[Document]:
-    docs = vector_store.similarity_search_with_score(query, k=4)
+    docs = vector_store.similarity_search_with_score(query, k=6)
 
     # scores = [doc[1] for doc in docs]
     docs = [doc[0] for doc in docs]

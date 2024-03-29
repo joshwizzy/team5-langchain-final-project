@@ -6,6 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 from langchain_community.document_loaders import GitHubIssuesLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import utils as chromautils
+from langchain.text_splitter import MarkdownHeaderTextSplitter
 
 load_dotenv(find_dotenv(), override=True)
 
@@ -15,14 +16,29 @@ def load_issues(repo=os.environ["GITHUB_REPOSITORY"]):
         repo=repo,
         access_token=os.environ["GITHUB_PERSONAL_ACCESS_TOKEN"],
         include_prs=False,
-        state="all",
+        state="open",
     )
 
     docs = loader.load()
     docs = chromautils.filter_complex_metadata(docs)
-    splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=30)
 
-    chunks = splitter.split_documents(docs)
+    headers_to_split_on = [
+        ("#", "Header 1"),
+        ("##", "Header 2"),
+        ("###", "Header 3"),
+    ]
+    # splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=30)
+    splitter = MarkdownHeaderTextSplitter(
+        headers_to_split_on=headers_to_split_on, strip_headers=False
+    )
+    docs = [(splitter.split_text(doc.page_content), doc.metadata) for doc in docs]
+
+    chunks = []
+    for doc_chunks, metadata in docs:
+        for chunk in doc_chunks:
+            chunk.metadata.update(metadata)
+        chunks += doc_chunks
+
     return chunks
 
 
