@@ -29,8 +29,7 @@ def project_issues_chat(title: str = "Project Issues Chat"):
             if response and response.status_code == 200:
                 st.session_state.repo_added = repo_link
             else:
-                st.error("Failed to add repo")
-
+                st.error("Failed to add repo. Please confirm you entered the correct repo path")
         st.button("Add repo", on_click=load_repo)
     else:
         chat_interface()
