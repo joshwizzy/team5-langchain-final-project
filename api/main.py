@@ -19,11 +19,11 @@ from services.github import add_issue, fetch_issue, load_issues
 from services.issues import generate_issue, search, summarize
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    issues = load_issues()
-    create_embeddings(issues)
-    yield
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     issues = load_issues()
+#     create_embeddings(issues)
+#     yield
 
 
 load_dotenv(find_dotenv(), override=True)
@@ -35,7 +35,7 @@ X_API_KEY = APIKeyHeader(name="X-API-Key", auto_error=False)
 def api_key_auth(x_api_key: str = Depends(X_API_KEY)):
     api_key = os.environ.get("API_KEY", None)
 
-    if api_key is None:
+    if not api_key:
         return
 
     if x_api_key != api_key:
@@ -48,7 +48,7 @@ def api_key_auth(x_api_key: str = Depends(X_API_KEY)):
 app = FastAPI(
     title="Github Issues PM Assistant",
     description="API Endpoints for a Github Issues PM Assistant",
-    lifespan=lifespan,
+    # lifespan=lifespan,
 )
 
 
